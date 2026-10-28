@@ -39,3 +39,26 @@ export function updateGuest(guest,changes,now=new Date()){
  if(changes.status==='Cancelled')g.host='Unassigned';
  g.history=[{at:now.toISOString(),text:changes.status?`Status changed to ${changes.status}.`:changes.host?`Host assigned: ${changes.host}.`:'Visit details updated.'},...(guest.history||[])];return g;
 }
+
+export const TASK_STATUSES=['To do','In progress','Done'];
+export function validateLeader(values){
+ const errors={};
+ if(!values.name?.trim()||values.name.trim().length>100)errors.name='Enter a leader name of up to 100 characters.';
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email||''))errors.email='Enter a sample email address.';
+ if(!values.department?.trim()||values.department.trim().length>70)errors.department='Enter a department name of up to 70 characters.';
+ return errors;
+}
+export function validateTask(values,members){
+ const errors={};
+ if(!values.title?.trim()||values.title.trim().length>140)errors.title='Enter a task title of up to 140 characters.';
+ if(!TASK_STATUSES.includes(values.status))errors.status='Choose a task status.';
+ if(!['Normal','High'].includes(values.priority))errors.priority='Choose a priority.';
+ if(values.due && (!/^\d{4}-\d{2}-\d{2}$/.test(values.due)||Number.isNaN(new Date(values.due+'T12:00:00Z').getTime())||new Date(values.due+'T12:00:00Z').toISOString().slice(0,10)!==values.due))errors.due='Choose a valid due date.';
+ if(values.assigneeId&&!members.some(m=>m.id===values.assigneeId&&m.departmentId===values.departmentId&&m.status==='Active'))errors.assigneeId='Choose an active member of this department.';
+ if((values.description||'').length>500)errors.description='Keep task details under 500 characters.';
+ return errors;
+}
+export function departmentSummary(workspace,departmentId,today){
+ const tasks=workspace.tasks.filter(t=>!departmentId||t.departmentId===departmentId);
+ return {members:workspace.members.filter(m=>(!departmentId||m.departmentId===departmentId)&&m.status==='Active').length,total:tasks.length,open:tasks.filter(t=>t.status!=='Done').length,done:tasks.filter(t=>t.status==='Done').length,overdue:tasks.filter(t=>t.status!=='Done'&&t.due&&t.due<today).length};
+}

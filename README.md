@@ -56,3 +56,18 @@ The office demo is at https://kaysongt.github.io/kingsword-chicago/#/office . It
 Build and verify with `npm run build`, `npm run check`, and `npm test`. Commit `docs/` whenever source changes. On GitHub, set repository visibility to public and Pages source to **Deploy from a branch → main → /docs**. No server, npm installation, custom domain, or backend is required. `docs/.nojekyll` disables Jekyll processing. All local assets use relative URLs so the project subpath works.
 
 Alternatively, run `bash publish-pages.sh` from a terminal authenticated with GitHub CLI. It changes this repository to public and configures Pages to publish `main:/docs`. These changes are explicitly requested by the project owner.
+
+## Department leadership demo
+
+The root URL now opens the office overview. The visitor website remains at `#/welcome`.
+
+- `#/office/leaders`: create a local leader demo profile, choose/create a department, or switch office/leader perspective.
+- `#/office/departments`: office oversight of illustrative department teams and their workload.
+- `#/office/team`: add/edit sample members, responsibilities, and availability.
+- `#/office/tasks`: create/edit tasks, assign active team members, set due dates/priorities, and track To do → In progress → Done.
+
+Demo profile setup does not create a real authenticated account. No passwords are collected. Department-specific screens are demo filtering, not a security boundary. All team/profile/task data remains in this browser's localStorage and is not shared across church staff. Real sign-up needs verified identity, office approval, server-enforced authorization, and a shared database before real use.
+
+## Home-screen app
+
+The web app manifest includes 192px and 512px icons and office/team shortcuts. On supported browsers it can be installed; iOS users can use Safari → Share → Add to Home Screen. The office overview includes an installation helper. A build-versioned service worker caches only this app's static files for offline viewing after the initial online load. No sensitive records or form submissions are sent to the cache. This is a web app, not a native App Store release, and installation does not enable cross-device synchronization.

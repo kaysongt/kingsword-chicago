@@ -34,3 +34,17 @@ test('guest history persists assignment and attendance; cancel releases host',()
  const attended=updateGuest(g,{status:'Attended'},now);assert.equal(attended.attendedAt,now.toISOString());assert.equal(g.attendedAt,undefined);
  const canceled=updateGuest(attended,{status:'Cancelled'},now);assert.equal(canceled.host,'Unassigned');assert.equal(canceled.history.length,2);
 });
+
+test('department task validation rejects cross-team and paused assignments',async()=>{
+ const {validateTask,validateLeader,departmentSummary}=await import('../dist/domain.mjs');
+ const members=[{id:'a',departmentId:'welcome',status:'Active'},{id:'b',departmentId:'media',status:'Active'},{id:'c',departmentId:'welcome',status:'Paused'}];
+ const task={title:'Welcome hosts',departmentId:'welcome',assigneeId:'a',status:'To do',priority:'High',due:'2026-11-01'};
+ assert.deepEqual(validateTask(task,members),{});
+ assert.ok(validateTask({...task,assigneeId:'b'},members).assigneeId);
+ assert.ok(validateTask({...task,assigneeId:'c'},members).assigneeId);
+ assert.ok(validateTask({...task,due:'2026-02-31'},members).due);
+ assert.ok(validateTask({...task,status:'Invalid'},members).status);
+ assert.ok(validateLeader({name:'',email:'bad',department:''}).name);
+ const result=departmentSummary({members,tasks:[task,{...task,title:'Done work',status:'Done'}]},'welcome','2026-11-03');
+ assert.equal(result.members,1);assert.equal(result.done,1);assert.equal(result.overdue,1);
+});

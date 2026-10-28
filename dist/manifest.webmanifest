@@ -1,11 +1,23 @@
 {
-  "name": "KingsWord Chicago",
-  "short_name": "KingsWord",
+  "name": "KingsWord Church Office",
+  "short_name": "KingsWord Office",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f7f6f1",
   "theme_color": "#112f3b",
   "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "./assets/mark.svg",
       "sizes": "any",
@@ -13,5 +25,20 @@
       "purpose": "any"
     }
   ],
-  "scope": "./"
+  "scope": "./",
+  "description": "Department teams, tasks, service planning, and church office demo",
+  "shortcuts": [
+    {
+      "name": "Office overview",
+      "url": "./#/office"
+    },
+    {
+      "name": "Team tasks",
+      "url": "./#/office/tasks"
+    },
+    {
+      "name": "Visitor website",
+      "url": "./#/welcome"
+    }
+  ]
 }
