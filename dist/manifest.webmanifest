@@ -1,1 +1,17 @@
-{"name":"KingsWord Chicago","short_name":"KingsWord","start_url":"/","display":"standalone","background_color":"#f7f6f1","theme_color":"#112f3b","icons":[{"src":"/assets/mark.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
+{
+  "name": "KingsWord Chicago",
+  "short_name": "KingsWord",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f6f1",
+  "theme_color": "#112f3b",
+  "icons": [
+    {
+      "src": "./assets/mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "scope": "./"
+}
