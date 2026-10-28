@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.dirname(fileURLToPath(import.meta.url));
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const mark=`data:image/svg+xml;base64,${Buffer.from(read('dist/assets/mark.svg')).toString('base64')}`;
+const css=read('dist/styles.css').replace(/^@import[^\n]+\n/,'');
+const domain=read('dist/domain.mjs').replaceAll('export const ','const ').replaceAll('export function ','function ');
+const app=read('dist/app.js').replace(/^import[^\n]+\n/,'').replaceAll('/assets/mark.svg',mark);
+let html=read('dist/index.html').replace('<link rel="manifest" href="/manifest.webmanifest">','').replace('href="/assets/mark.svg"',`href="${mark}"`).replace('<link rel="stylesheet" href="/styles.css">',`<style>${css}</style>`).replace('<script type="module" src="/app.js"></script>',`<script type="module">${domain}\n${app}</script>`);
+const output=path.join(root,'KingsWord-Preview.html');
+fs.writeFileSync(output,html);console.log(`Self-contained preview: ${output}`);
